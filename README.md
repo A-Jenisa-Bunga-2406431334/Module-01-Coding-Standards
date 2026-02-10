@@ -1,7 +1,4 @@
 # E-Shop Application
-
-**Advanced Programming - Modul 1: Coding Standards**
-
 ## Deskripsi 
 
 E-Shop adalah aplikasi web sederhana untuk manajemen produk yang dibangun menggunakan Spring Boot 3.5.10 dan Java 21. Aplikasi ini mendemonstrasikan operasi CRUD (Create, Read, Update, Delete) dengan menerapkan prinsip clean code dan praktik secure coding.
@@ -97,6 +94,61 @@ Dari pengalaman mengerjakan modul ini, saya belajar bahwa clean code bukan hanya
 Untuk secure coding, saya jadi lebih aware bahwa validasi frontend saja tidak cukup. User dengan niat jahat atau bahkan user yang tidak sengaja bisa menyebabkan masalah kalau server tidak punya validasi sendiri. Error handling juga penting bukan hanya untuk user experience tapi juga untuk mencegah information disclosure.
 
 Yang paling penting, saya menyadari bahwa kode yang saya tulis sekarang masih jauh dari sempurna. Masih banyak improvement yang bisa dilakukan seperti menambahkan unit test, menggunakan database yang proper, dan implementasi logging yang baik. Tapi setidaknya foundation-nya sudah benar dengan menerapkan clean code principles dan basic secure coding practices.
+
+## Reflection 2
+
+### 1. Pengalaman Unit Testing dan Code Coverage
+
+Setelah menulis unit test, saya merasa lebih yakin terhadap kebenaran dan kestabilan aplikasi. Unit testing membantu saya memahami perilaku setiap method, baik pada kondisi normal maupun tidak normal. Proses ini juga memaksa saya berpikir lebih kritis terhadap kemungkinan bug sejak awal, serta membuat proses refactoring menjadi lebih aman karena adanya test sebagai pengaman.
+
+### Berapa banyak unit test yang sebaiknya dibuat dalam satu class?
+Tidak ada jumlah pasti unit test yang harus dibuat dalam satu class. Jumlahnya bergantung pada kompleksitas dan tanggung jawab class tersebut. Secara umum, setiap public method sebaiknya memiliki unit test yang mencakup:
+
+# Skenario normal (happy path)
+# Edge case atau boundary condition
+# Skenario negatif dan penanganan error
+
+Tujuan utama bukanlah memperbanyak jumlah test, melainkan memastikan bahwa seluruh perilaku penting dari class tersebut telah terverifikasi dengan baik.
+
+### Bagaimana memastikan bahwa unit test sudah cukup?
+Salah satu cara untuk mengevaluasi kecukupan unit test adalah dengan menggunakan code coverage. Code coverage mengukur seberapa banyak baris, cabang, atau method dalam source code yang dieksekusi saat pengujian berjalan. Tools seperti JaCoCo dapat membantu menunjukkan bagian kode mana yang sudah diuji dan mana yang belum.
+
+Namun, 100% code coverage tidak berarti kode bebas dari bug atau error. Code coverage hanya menunjukkan bahwa kode tersebut dieksekusi, bukan bahwa logikanya sudah benar. Sebuah test bisa saja mengeksekusi kode tanpa melakukan assertion yang bermakna. Oleh karena itu, selain memperhatikan code coverage, kita juga harus memastikan bahwa:
+
+# Assertion benar-benar memverifikasi perilaku yang diharapkan
+# Edge case dan input tidak valid diuji
+# Jalur exception ditangani dan diuji
+# Test merepresentasikan skenario penggunaan nyata
+
+Kesimpulannya, code coverage adalah indikator yang berguna, tetapi kualitas dan relevansi test jauh lebih penting daripada sekadar mencapai angka 100%.
+
+### 2. Kebersihan Kode pada Functional Test Suite
+
+Setelah menulis `CreateProductFunctionalTest.java`, pembuatan functional test suite baru untuk memverifikasi jumlah item pada product list dengan prosedur setup dan instance variable yang sama berpotensi menimbulkan masalah kebersihan kode jika tidak dirancang dengan baik.
+
+### Potensi Masalah Clean Code:
+
+1. Duplikasi Kode (Pelanggaran Prinsip DRY – Don’t Repeat Yourself)
+   Pengulangan kode setup seperti konfigurasi server, pembuatan base URL, dan anotasi yang sama di banyak test class menyebabkan duplikasi. Hal ini meningkatkan beban pemeliharaan karena perubahan kecil harus dilakukan di banyak tempat.
+
+2. Menurunnya Maintainability
+   Ketika logika konfigurasi tersebar di berbagai class test, perubahan pada konfigurasi aplikasi (misalnya perubahan port atau URL) berisiko menimbulkan inkonsistensi jika tidak semua class diperbarui.
+
+3. Pemisahan Tanggung Jawab yang Buruk
+   Pencampuran kode infrastruktur test (setup server dan konfigurasi WebDriver) dengan logika pengujian membuat test menjadi kurang terbaca dan sulit dipahami.
+
+## Saran Perbaikan:
+
+1. Membuat Base Functional Test Class
+   Seluruh logika setup yang sama dapat diekstrak ke dalam satu abstract base class. Setiap functional test suite cukup melakukan extend ke class ini sehingga duplikasi kode dapat dihilangkan.
+
+2. Menerapkan Page Object Pattern
+   Setiap halaman web (misalnya halaman create product atau product list) direpresentasikan sebagai class terpisah. Class ini menyimpan elemen dan aksi halaman, sehingga test class hanya berfokus pada skenario pengujian.
+
+3. Menggunakan Helper atau Utility Method
+   Operasi yang sering digunakan, seperti navigasi halaman atau pengisian form, dapat dipindahkan ke helper method. Hal ini membuat test lebih ringkas, ekspresif, dan mudah dirawat.
+
+Dengan menerapkan perbaikan tersebut, kode functional test akan menjadi lebih bersih, terstruktur, dan mudah dikembangkan di masa depan. Hal ini secara langsung meningkatkan kualitas kode dan keberlanjutan proyek secara keseluruhan.
 
 ## Author
 
