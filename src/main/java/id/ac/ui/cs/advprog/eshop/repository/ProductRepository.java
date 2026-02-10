@@ -41,7 +41,18 @@ public class ProductRepository {
         return null;
     }
 
-    public void delete(String productId) {
-        productData.removeIf(product -> product.getProductId().equals(productId));
+    public Product delete(String productId) {
+        for (int i = 0; i < productData.size(); i++) {
+            Product product = productData.get(i);
+            if (product.getProductId().equals(productId)) {
+                productData.remove(i);
+                return product; // Return product yang dihapus
+            }
+        }
+        return null; // Product not found
+    }
+
+    public Product edit(Product product) {
+        return update(product.getProductId(), product);
     }
 }
