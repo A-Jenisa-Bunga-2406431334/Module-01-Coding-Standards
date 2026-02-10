@@ -104,9 +104,9 @@ Setelah menulis unit test, saya merasa lebih yakin terhadap kebenaran dan kestab
 ### Berapa banyak unit test yang sebaiknya dibuat dalam satu class?
 Tidak ada jumlah pasti unit test yang harus dibuat dalam satu class. Jumlahnya bergantung pada kompleksitas dan tanggung jawab class tersebut. Secara umum, setiap public method sebaiknya memiliki unit test yang mencakup:
 
-# Skenario normal (happy path)
-# Edge case atau boundary condition
-# Skenario negatif dan penanganan error
+- Skenario normal (happy path)
+- Edge case atau boundary condition
+- Skenario negatif dan penanganan error
 
 Tujuan utama bukanlah memperbanyak jumlah test, melainkan memastikan bahwa seluruh perilaku penting dari class tersebut telah terverifikasi dengan baik.
 
@@ -115,10 +115,7 @@ Salah satu cara untuk mengevaluasi kecukupan unit test adalah dengan menggunakan
 
 Namun, 100% code coverage tidak berarti kode bebas dari bug atau error. Code coverage hanya menunjukkan bahwa kode tersebut dieksekusi, bukan bahwa logikanya sudah benar. Sebuah test bisa saja mengeksekusi kode tanpa melakukan assertion yang bermakna. Oleh karena itu, selain memperhatikan code coverage, kita juga harus memastikan bahwa:
 
-# Assertion benar-benar memverifikasi perilaku yang diharapkan
-# Edge case dan input tidak valid diuji
-# Jalur exception ditangani dan diuji
-# Test merepresentasikan skenario penggunaan nyata
+Assertion benar-benar memverifikasi perilaku yang diharapkan Edge case dan input tidak valid diuji Jalur exception ditangani dan diuji Test merepresentasikan skenario penggunaan nyata
 
 Kesimpulannya, code coverage adalah indikator yang berguna, tetapi kualitas dan relevansi test jauh lebih penting daripada sekadar mencapai angka 100%.
 
@@ -156,6 +153,6 @@ Jenisa Bunga - 2406431334
 Fakultas Ilmu Komputer, Universitas Indonesia
 
 
-## 📅 Timeline Pengembangan
+## Timeline Pengembangan
 
 - **Modul 1**: Implementasi CRUD dengan clean code principles
