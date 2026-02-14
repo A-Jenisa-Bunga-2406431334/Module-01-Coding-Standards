@@ -1,5 +1,6 @@
 plugins {
 	java
+	jacoco
 	id("org.springframework.boot") version "3.2.2"
 	id("io.spring.dependency-management") version "1.1.4"
 }
@@ -61,6 +62,18 @@ tasks.register<Test>("functionalTest") {
 	filter {
 		includeTestsMatching("*FunctionalTest")
 	}
+}
+
+// Configure test task to exclude functional tests and generate coverage
+tasks.named<Test>("test") {
+	filter {
+		excludeTestsMatching("*FunctionalTest")
+	}
+	finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test) // tests are required to run before generating the report
 }
 
 // 4. Replace bagian terakhir dengan kode ini
