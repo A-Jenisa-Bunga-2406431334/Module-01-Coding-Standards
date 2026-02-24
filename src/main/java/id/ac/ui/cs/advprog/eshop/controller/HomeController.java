@@ -9,6 +9,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
+        int unused = 5;
         return "home";
     }
 }
