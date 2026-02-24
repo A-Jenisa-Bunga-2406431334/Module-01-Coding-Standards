@@ -163,6 +163,19 @@ Workflow yang dibuat sudah bisa dianggap sebagai Continuous Integration karena s
 
 Selain itu, proses deployment juga berjalan otomatis setelah build berhasil, sehingga bisa disebut sebagai Continuous Deployment. Implementasi ini masih sederhana, tetapi sudah cukup untuk menunjukkan konsep dasar CI/CD.
 
+### Catatan tentang Deployment
+
+Saya telah mengimplementasikan konfigurasi deployment menggunakan Dockerfile dan workflow CI/CD yang lengkap. Namun, deployment ke PaaS (Platform as a Service) tidak dapat diselesaikan karena keterbatasan akses ke credit card atau debit card yang diperlukan untuk verifikasi akun di platform seperti Render, heroku, atau Koyeb.
+
+Sebagai alternatif, saya telah menyiapkan:
+- Dockerfile yang telah diuji dan siap deploy
+- GitHub Actions workflow yang otomatis build dan test
+- PMD code quality analysis
+- OSSF Scorecard security scanning
+- Dokumentasi lengkap untuk deployment
+
+Aplikasi dapat dijalankan secara lokal dan deployment dapat dilakukan kapan saja di masa depan ketika akses ke payment method tersedia.
+
 ## Author
 
 Jenisa Bunga - 2406431334
