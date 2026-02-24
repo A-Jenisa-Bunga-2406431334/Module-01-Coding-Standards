@@ -147,12 +147,25 @@ Setelah menulis `CreateProductFunctionalTest.java`, pembuatan functional test su
 
 Dengan menerapkan perbaikan tersebut, kode functional test akan menjadi lebih bersih, terstruktur, dan mudah dikembangkan di masa depan. Hal ini secara langsung meningkatkan kualitas kode dan keberlanjutan proyek secara keseluruhan.
 
+## Reflection 4.2
+
+1. Code quality issues yang diperbaiki dan strateginya
+
+Pada awalnya, saya tidak menemukan masalah kualitas kode yang signifikan karena kode dari tutorial sudah cukup rapi. Oleh karena itu, saya mencoba menambahkan contoh pelanggaran kode secara sengaja untuk melihat apakah tools analisis dapat mendeteksinya.
+
+Salah satu pelanggaran yang saya coba adalah penggunaan empty catch block, yang merupakan praktik penanganan exception yang kurang baik. Setelah dijalankan, tools berhasil mendeteksi masalah tersebut sebagai code quality issue.
+
+Untuk memperbaikinya, saya menambahkan penanganan error yang lebih tepat di dalam blok catch agar exception tidak diabaikan. Dari proses ini, saya memahami bahwa menjaga kualitas kode penting untuk mencegah kesalahan tersembunyi dan membuat program lebih mudah dipelihara.
+
+2. Evaluasi implementasi CI/CD
+
+Workflow yang dibuat sudah bisa dianggap sebagai Continuous Integration karena setiap push akan langsung menjalankan build dan test secara otomatis. Dengan begitu, kesalahan bisa langsung diketahui lebih awal.
+
+Selain itu, proses deployment juga berjalan otomatis setelah build berhasil, sehingga bisa disebut sebagai Continuous Deployment. Implementasi ini masih sederhana, tetapi sudah cukup untuk menunjukkan konsep dasar CI/CD.
+
 ## Author
 
 Jenisa Bunga - 2406431334
 Fakultas Ilmu Komputer, Universitas Indonesia
 
 
-## Timeline Pengembangan
-
-- **Modul 1**: Implementasi CRUD dengan clean code principles
