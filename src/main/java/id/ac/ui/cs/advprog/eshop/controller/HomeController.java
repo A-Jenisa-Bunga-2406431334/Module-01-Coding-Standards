@@ -9,7 +9,10 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        int unused = 5;
+        try {
+            int x = 1 / 0;
+        } catch (Exception e) {
+        }
         return "home";
     }
 }
