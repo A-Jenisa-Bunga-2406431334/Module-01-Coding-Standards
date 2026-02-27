@@ -165,16 +165,17 @@ Selain itu, proses deployment juga berjalan otomatis setelah build berhasil, seh
 
 ### Catatan tentang Deployment
 
-Saya telah mengimplementasikan konfigurasi deployment menggunakan Dockerfile dan workflow CI/CD yang lengkap. Namun, deployment ke PaaS (Platform as a Service) tidak dapat diselesaikan karena keterbatasan akses ke credit card atau debit card yang diperlukan untuk verifikasi akun di platform seperti Render, heroku, atau Koyeb.
+Aplikasi berhasil di-deploy ke **Koyeb** (PaaS) dan dapat diakses secara publik di:
 
-Sebagai alternatif, saya telah menyiapkan:
-- Dockerfile yang telah diuji dan siap deploy
-- GitHub Actions workflow yang otomatis build dan test
-- PMD code quality analysis
-- OSSF Scorecard security scanning
-- Dokumentasi lengkap untuk deployment
+**🌐 Live URL:** https://narrow-harriett-eshop-module-bbef9481.koyeb.app/product/list
 
-Aplikasi dapat dijalankan secara lokal dan deployment dapat dilakukan kapan saja di masa depan ketika akses ke payment method tersedia.
+**Platform:** Koyeb Free Tier
+- Instance: 0.1 vCPU, 512 MB RAM
+- Region: Frankfurt, Germany
+- Builder: Docker
+- Auto-deploy: Enabled from main branch
+
+Deployment menggunakan Dockerfile dan GitHub Actions untuk CI/CD automation. Setiap push ke main branch akan otomatis trigger build dan deploy jika semua test passed.
 
 ## Author
 
