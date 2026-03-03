@@ -1,185 +1,247 @@
 # E-Shop Application
-## Deskripsi 
+
+## Deskripsi
 
 E-Shop adalah aplikasi web sederhana untuk manajemen produk yang dibangun menggunakan Spring Boot 3.5.10 dan Java 21. Aplikasi ini mendemonstrasikan operasi CRUD (Create, Read, Update, Delete) dengan menerapkan prinsip clean code dan praktik secure coding.
 
 ## Fitur
 
-- **Tambah Produk**: Menambahkan produk baru dengan nama dan kuantitas
-- **Lihat Daftar Produk**: Menampilkan semua produk dalam format tabel
-- **Edit Produk**: Mengubah informasi produk yang sudah ada
-- **Hapus Produk**: Menghapus produk dari daftar
-- **Bootstrap UI**: Antarmuka pengguna yang responsif dan modern
+- **Tambah Produk** — Menambahkan produk baru dengan nama dan kuantitas
+- **Lihat Daftar Produk** — Menampilkan semua produk dalam format tabel
+- **Edit Produk** — Mengubah informasi produk yang sudah ada
+- **Hapus Produk** — Menghapus produk dari daftar
+- **Bootstrap UI** — Antarmuka pengguna yang responsif dan modern
 
 ## Teknologi yang Digunakan
 
-- **Java**: 21 
-- **Spring Boot**: 3.5.10
-- **Build Tool**: Gradle 8.14.4
-- **Template Engine**: Thymeleaf
-- **UI Framework**: Bootstrap
-- **Annotations**: Lombok 
+| Teknologi | Versi |
+|-----------|-------|
+| Java | 21 |
+| Spring Boot | 3.5.10 |
+| Build Tool | Gradle 8.14.4 |
+| Template Engine | Thymeleaf |
+| UI Framework | Bootstrap |
+| Annotations | Lombok |
 
 ## Cara Menjalankan
 
 1. Clone repository ini
 2. Masuk ke direktori proyek
-3. Jalankan aplikasi:
+3. Jalankan aplikasi
 4. Buka browser: `http://localhost:8080/product/list`
 
-## Reflection: Penerapan Clean Code dan Secure Coding
+---
 
-### 1. Prinsip Clean Code yang Sudah Diterapkan
+## Reflection 1 — Clean Code dan Secure Coding
 
-#### Penamaan yang Bermakna
-Saya menggunakan nama-nama yang jelas dan deskriptif untuk kelas, method, dan variabel. Misalnya, `ProductController` langsung menunjukkan bahwa kelas ini mengatur request terkait produk, bukan nama generik seperti `Manager` atau `Handler`. Method seperti `findById()` juga lebih mudah dipahami daripada `get()` atau `retrieve()`. Begitu juga dengan nama variabel seperti `productId`, `productName`, dan `productQuantity` yang self-explanatory sehingga orang lain bisa langsung paham tanpa perlu baca dokumentasi.
+### Prinsip Clean Code yang Sudah Diterapkan
 
-#### Single Responsibility Principle (SRP)
-Setiap kelas dalam proyek ini punya tanggung jawab yang spesifik. Kelas `Product` hanya berisi struktur data produk tanpa logika bisnis apapun. `ProductRepository` fokus pada operasi penyimpanan data seperti tambah, cari, update, dan hapus. `ProductService` mengurus logika bisnis, sementara `ProductController` hanya handle HTTP request dan response. Pemisahan ini bikin kode lebih mudah di-maintain karena kalau ada perubahan di satu area, kita tahu persis harus ubah di kelas mana.
+**Penamaan yang Bermakna**
 
-#### Function yang Kecil dan Fokus
-Method-method yang saya buat relatif pendek dan melakukan satu hal saja. Contohnya method `create()` hanya menambahkan produk, `findAll()` hanya mengambil semua produk, dan seterusnya. Tidak ada method yang melakukan terlalu banyak hal sekaligus yang bisa bikin bingung.
+Nama-nama kelas, method, dan variabel dibuat jelas dan deskriptif. Misalnya, `ProductController` langsung menunjukkan bahwa kelas ini mengatur request terkait produk. Method seperti `findById()` lebih mudah dipahami daripada `get()`, dan variabel seperti `productId`, `productName`, serta `productQuantity` bersifat self-explanatory.
 
-#### DRY (Don't Repeat Yourself)
-Saya menghindari duplikasi kode dengan menggunakan layer service yang bisa dipanggil dari berbagai controller. Logika bisnis tidak tersebar di berbagai tempat, tapi terpusat di service layer. Ini juga memudahkan kalau nanti ada perubahan logika, cukup ubah di satu tempat.
+**Single Responsibility Principle (SRP)**
 
-### 2. Secure Coding Practices yang Sudah Diterapkan
+Setiap kelas punya tanggung jawab yang spesifik:
+- `Product` — berisi struktur data produk tanpa logika bisnis
+- `ProductRepository` — fokus pada operasi penyimpanan data
+- `ProductService` — mengurus logika bisnis
+- `ProductController` — handle HTTP request dan response
 
-#### Validasi Input di Frontend
-Di form HTML, saya menggunakan atribut `required` untuk memastikan user tidak bisa submit form kosong. Untuk input quantity, ada validasi `min="0"` supaya user tidak bisa input angka negatif. Meskipun ini bukan security yang sempurna, setidaknya bisa mencegah input yang jelas-jelas salah.
+**Function yang Kecil dan Fokus**
 
-#### Generate ID di Server-Side
-Product ID di-generate menggunakan UUID di server, bukan dari input user. Ini penting supaya user tidak bisa manipulasi ID atau membuat ID yang bentrok dengan produk lain. User tidak punya kontrol atas ID yang dibuat sistem.
+Method-method dibuat pendek dan melakukan satu hal saja. Contohnya, `create()` hanya menambahkan produk dan `findAll()` hanya mengambil semua produk.
 
-#### HTTP Method yang Tepat
-Untuk operasi delete, saya menggunakan POST method bukan GET. Ini penting karena GET seharusnya hanya untuk membaca data, bukan mengubah state. Kalau pakai GET untuk delete, ada risiko CSRF (Cross-Site Request Forgery) dimana link jahat bisa menghapus data tanpa sepengetahuan user.
+**DRY (Don't Repeat Yourself)**
 
-#### Konfirmasi untuk Aksi Destruktif
-Sebelum menghapus produk, ada dialog konfirmasi JavaScript yang muncul. Ini mencegah user tidak sengaja menghapus data penting hanya karena salah klik.
+Logika bisnis tidak tersebar di berbagai tempat, melainkan terpusat di service layer sehingga perubahan cukup dilakukan di satu tempat.
 
-#### Dependency Injection
-Saya menggunakan `@Autowired` untuk inject dependency, bukan instantiate langsung dengan keyword `new`. Ini membuat kode lebih loosely coupled dan lebih mudah untuk testing karena dependency bisa di-mock.
+### Secure Coding Practices yang Sudah Diterapkan
 
-### 3. Masalah yang Ditemukan dan Cara Perbaikannya
+**Validasi Input di Frontend**
 
-#### Tidak Ada Validasi di Backend
-Masalahnya sekarang, validasi hanya ada di frontend (HTML). Ini berbahaya karena user yang paham teknis bisa bypass validasi frontend dengan tools seperti Postman atau curl, lalu mengirim data yang invalid langsung ke server. 
+Form HTML menggunakan atribut `required` dan validasi `min="0"` untuk mencegah input yang jelas-jelas tidak valid.
 
-Solusinya, tambahkan validasi di service layer
+**Generate ID di Server-Side**
 
-#### Tidak Ada Error Handling
-Kalau user coba edit atau delete produk yang tidak ada (misalnya ID salah atau produk sudah dihapus), aplikasi bisa crash dengan NullPointerException. Ini pengalaman user yang buruk dan juga bisa expose informasi sistem yang seharusnya tidak terlihat.
+Product ID di-generate menggunakan UUID di server, bukan dari input user, sehingga user tidak bisa memanipulasi ID.
 
-Lebih baik lagi kalau ada halaman error khusus atau flash message yang memberitahu user bahwa produk tidak ditemukan.
+**HTTP Method yang Tepat**
 
-#### Penyimpanan Data yang Tidak Persisten
-Saat ini data disimpan di ArrayList yang berarti semua data hilang setiap kali aplikasi di-restart. Ini mungkin tidak masalah untuk pembelajaran atau demo, tapi untuk aplikasi production jelas tidak bisa diterima.
+Operasi delete menggunakan POST method, bukan GET, untuk mencegah risiko CSRF.
 
-Solusi jangka panjangnya pakai database seperti PostgreSQL atau MySQL dengan Spring Data JPA. Untuk development, bisa pakai H2 database yang embedded.
+**Konfirmasi untuk Aksi Destruktif**
 
-#### Tidak Ada Logging
-Aplikasi saat ini tidak punya logging sama sekali. Kalau terjadi error atau bug di production, akan sangat susah untuk debugging karena tidak ada jejak apa yang terjadi.
+Dialog konfirmasi JavaScript muncul sebelum menghapus produk untuk mencegah penghapusan data yang tidak disengaja.
 
-Logging membantu monitoring aplikasi dan troubleshooting ketika ada masalah.
+**Dependency Injection**
 
-#### Magic Strings
-Di controller, ada beberapa string yang hardcoded seperti `"redirect:list"` atau `"CreateProduct"`. Kalau nanti nama view berubah, harus cari satu-satu di semua tempat yang menggunakan string itu.
+`@Autowired` digunakan untuk inject dependency sehingga kode lebih loosely coupled dan mudah di-test.
 
-Lebih baik define sebagai konstanta, dengan cara ini kalau ada perubahan cukup ubah di satu tempat.
+### Masalah yang Ditemukan dan Cara Perbaikannya
 
-### 4. Kesimpulan
+**Tidak Ada Validasi di Backend**
 
-Dari pengalaman mengerjakan modul ini, saya belajar bahwa clean code bukan hanya soal kode yang "berjalan", tapi kode yang mudah dibaca, dipahami, dan di-maintain oleh orang lain (atau diri sendiri di masa depan). Prinsip seperti SRP dan DRY memang terdengar sederhana tapi impact-nya besar dalam jangka panjang.
+Saat ini validasi hanya ada di frontend, sehingga user yang paham teknis bisa bypass validasi dengan tools seperti Postman. Solusinya adalah menambahkan validasi di service layer.
 
-Untuk secure coding, saya jadi lebih aware bahwa validasi frontend saja tidak cukup. User dengan niat jahat atau bahkan user yang tidak sengaja bisa menyebabkan masalah kalau server tidak punya validasi sendiri. Error handling juga penting bukan hanya untuk user experience tapi juga untuk mencegah information disclosure.
+**Tidak Ada Error Handling**
 
-Yang paling penting, saya menyadari bahwa kode yang saya tulis sekarang masih jauh dari sempurna. Masih banyak improvement yang bisa dilakukan seperti menambahkan unit test, menggunakan database yang proper, dan implementasi logging yang baik. Tapi setidaknya foundation-nya sudah benar dengan menerapkan clean code principles dan basic secure coding practices.
+Jika user mencoba edit atau delete produk yang tidak ada, aplikasi bisa crash dengan `NullPointerException`. Solusinya adalah menambahkan halaman error khusus atau flash message yang informatif.
 
-## Reflection 2
+**Penyimpanan Data Tidak Persisten**
 
-### 1. Pengalaman Unit Testing dan Code Coverage
+Data saat ini disimpan di ArrayList sehingga hilang setiap kali aplikasi di-restart. Solusi jangka panjangnya adalah menggunakan database seperti PostgreSQL atau MySQL dengan Spring Data JPA.
 
-Setelah menulis unit test, saya merasa lebih yakin terhadap kebenaran dan kestabilan aplikasi. Unit testing membantu saya memahami perilaku setiap method, baik pada kondisi normal maupun tidak normal. Proses ini juga memaksa saya berpikir lebih kritis terhadap kemungkinan bug sejak awal, serta membuat proses refactoring menjadi lebih aman karena adanya test sebagai pengaman.
+**Tidak Ada Logging**
 
-### Berapa banyak unit test yang sebaiknya dibuat dalam satu class?
-Tidak ada jumlah pasti unit test yang harus dibuat dalam satu class. Jumlahnya bergantung pada kompleksitas dan tanggung jawab class tersebut. Secara umum, setiap public method sebaiknya memiliki unit test yang mencakup:
+Tanpa logging, debugging di production sangat sulit. Perlu ditambahkan logging untuk monitoring dan troubleshooting.
 
+**Magic Strings**
+
+String seperti `"redirect:list"` atau `"CreateProduct"` yang hardcoded sebaiknya didefinisikan sebagai konstanta agar perubahan cukup dilakukan di satu tempat.
+
+### Kesimpulan
+
+Clean code bukan hanya soal kode yang "berjalan", tetapi kode yang mudah dibaca, dipahami, dan di-maintain. Validasi frontend saja tidak cukup — server harus memiliki validasi sendiri. Masih banyak improvement yang bisa dilakukan seperti unit test, database yang proper, dan implementasi logging, tetapi foundation-nya sudah benar dengan menerapkan clean code principles dan basic secure coding practices.
+
+---
+
+## Reflection 2 — Unit Testing dan Code Coverage
+
+### Pengalaman Unit Testing
+
+Setelah menulis unit test, saya merasa lebih yakin terhadap kebenaran dan kestabilan aplikasi. Unit testing membantu memahami perilaku setiap method, memaksa berpikir lebih kritis terhadap kemungkinan bug, serta membuat proses refactoring lebih aman.
+
+### Berapa Banyak Unit Test yang Sebaiknya Dibuat?
+
+Tidak ada jumlah pasti. Bergantung pada kompleksitas class, setiap public method sebaiknya memiliki unit test yang mencakup:
 - Skenario normal (happy path)
 - Edge case atau boundary condition
 - Skenario negatif dan penanganan error
 
-Tujuan utama bukanlah memperbanyak jumlah test, melainkan memastikan bahwa seluruh perilaku penting dari class tersebut telah terverifikasi dengan baik.
+Tujuan utama bukan memperbanyak jumlah test, melainkan memastikan seluruh perilaku penting telah terverifikasi.
 
-### Bagaimana memastikan bahwa unit test sudah cukup?
-Salah satu cara untuk mengevaluasi kecukupan unit test adalah dengan menggunakan code coverage. Code coverage mengukur seberapa banyak baris, cabang, atau method dalam source code yang dieksekusi saat pengujian berjalan. Tools seperti JaCoCo dapat membantu menunjukkan bagian kode mana yang sudah diuji dan mana yang belum.
+### Bagaimana Memastikan Unit Test Sudah Cukup?
 
-Namun, 100% code coverage tidak berarti kode bebas dari bug atau error. Code coverage hanya menunjukkan bahwa kode tersebut dieksekusi, bukan bahwa logikanya sudah benar. Sebuah test bisa saja mengeksekusi kode tanpa melakukan assertion yang bermakna. Oleh karena itu, selain memperhatikan code coverage, kita juga harus memastikan bahwa:
+Code coverage (misalnya menggunakan JaCoCo) dapat membantu menunjukkan bagian kode mana yang sudah diuji. Namun, **100% code coverage tidak berarti kode bebas dari bug**. Selain coverage, pastikan juga:
+- Assertion benar-benar memverifikasi perilaku yang diharapkan
+- Edge case dan input tidak valid diuji
+- Jalur exception ditangani dan diuji
+- Test merepresentasikan skenario penggunaan nyata
 
-Assertion benar-benar memverifikasi perilaku yang diharapkan Edge case dan input tidak valid diuji Jalur exception ditangani dan diuji Test merepresentasikan skenario penggunaan nyata
+Kualitas dan relevansi test jauh lebih penting daripada sekadar mencapai angka 100%.
 
-Kesimpulannya, code coverage adalah indikator yang berguna, tetapi kualitas dan relevansi test jauh lebih penting daripada sekadar mencapai angka 100%.
+### Kebersihan Kode pada Functional Test Suite
 
-### 2. Kebersihan Kode pada Functional Test Suite
+Pembuatan functional test suite baru dengan prosedur setup dan instance variable yang sama berpotensi menimbulkan masalah kebersihan kode:
 
-Setelah menulis `CreateProductFunctionalTest.java`, pembuatan functional test suite baru untuk memverifikasi jumlah item pada product list dengan prosedur setup dan instance variable yang sama berpotensi menimbulkan masalah kebersihan kode jika tidak dirancang dengan baik.
+**Potensi Masalah:**
+- **Duplikasi Kode (DRY)** — Pengulangan kode setup di banyak test class meningkatkan beban pemeliharaan
+- **Menurunnya Maintainability** — Perubahan konfigurasi berisiko menimbulkan inkonsistensi jika tidak semua class diperbarui
+- **Pemisahan Tanggung Jawab yang Buruk** — Pencampuran kode infrastruktur test dengan logika pengujian membuat test sulit dipahami
 
-### Potensi Masalah Clean Code:
+**Saran Perbaikan:**
+- **Base Functional Test Class** — Ekstrak logika setup ke abstract base class yang di-extend oleh setiap test suite
+- **Page Object Pattern** — Representasikan setiap halaman web sebagai class terpisah yang menyimpan elemen dan aksi halaman
+- **Helper/Utility Method** — Pindahkan operasi yang sering digunakan ke helper method agar test lebih ringkas
 
-1. Duplikasi Kode (Pelanggaran Prinsip DRY – Don’t Repeat Yourself)
-   Pengulangan kode setup seperti konfigurasi server, pembuatan base URL, dan anotasi yang sama di banyak test class menyebabkan duplikasi. Hal ini meningkatkan beban pemeliharaan karena perubahan kecil harus dilakukan di banyak tempat.
+---
 
-2. Menurunnya Maintainability
-   Ketika logika konfigurasi tersebar di berbagai class test, perubahan pada konfigurasi aplikasi (misalnya perubahan port atau URL) berisiko menimbulkan inkonsistensi jika tidak semua class diperbarui.
+## Reflection 3 — CI/CD
 
-3. Pemisahan Tanggung Jawab yang Buruk
-   Pencampuran kode infrastruktur test (setup server dan konfigurasi WebDriver) dengan logika pengujian membuat test menjadi kurang terbaca dan sulit dipahami.
+### Code Quality Issues
 
-## Saran Perbaikan:
+Awalnya tidak ditemukan masalah signifikan karena kode tutorial sudah cukup rapi. Setelah mencoba menambahkan contoh pelanggaran seperti empty catch block, tools analisis berhasil mendeteksinya sebagai code quality issue. Perbaikan dilakukan dengan menambahkan penanganan error yang tepat di dalam blok catch.
 
-1. Membuat Base Functional Test Class
-   Seluruh logika setup yang sama dapat diekstrak ke dalam satu abstract base class. Setiap functional test suite cukup melakukan extend ke class ini sehingga duplikasi kode dapat dihilangkan.
+### Evaluasi Implementasi CI/CD
 
-2. Menerapkan Page Object Pattern
-   Setiap halaman web (misalnya halaman create product atau product list) direpresentasikan sebagai class terpisah. Class ini menyimpan elemen dan aksi halaman, sehingga test class hanya berfokus pada skenario pengujian.
+Workflow yang dibuat sudah memenuhi konsep **Continuous Integration** karena setiap push langsung menjalankan build dan test secara otomatis. Proses deployment yang berjalan otomatis setelah build berhasil juga memenuhi konsep **Continuous Deployment**. Implementasi ini masih sederhana tetapi sudah menunjukkan konsep dasar CI/CD dengan baik.
 
-3. Menggunakan Helper atau Utility Method
-   Operasi yang sering digunakan, seperti navigasi halaman atau pengisian form, dapat dipindahkan ke helper method. Hal ini membuat test lebih ringkas, ekspresif, dan mudah dirawat.
+### Deployment
 
-Dengan menerapkan perbaikan tersebut, kode functional test akan menjadi lebih bersih, terstruktur, dan mudah dikembangkan di masa depan. Hal ini secara langsung meningkatkan kualitas kode dan keberlanjutan proyek secara keseluruhan.
+Aplikasi berhasil di-deploy ke **Koyeb** (PaaS):
 
-## Reflection 4.2
+🌐 **Live URL:** https://narrow-harriett-eshop-module-bbef9481.koyeb.app/product/list
 
-1. Code quality issues yang diperbaiki dan strateginya
+| Konfigurasi | Detail |
+|-------------|--------|
+| Platform | Koyeb Free Tier |
+| Instance | 0.1 vCPU, 512 MB RAM |
+| Region | Frankfurt, Germany |
+| Builder | Docker |
+| Auto-deploy | Enabled from main branch |
 
-Pada awalnya, saya tidak menemukan masalah kualitas kode yang signifikan karena kode dari tutorial sudah cukup rapi. Oleh karena itu, saya mencoba menambahkan contoh pelanggaran kode secara sengaja untuk melihat apakah tools analisis dapat mendeteksinya.
+---
 
-Salah satu pelanggaran yang saya coba adalah penggunaan empty catch block, yang merupakan praktik penanganan exception yang kurang baik. Setelah dijalankan, tools berhasil mendeteksi masalah tersebut sebagai code quality issue.
+## Reflection 4 — SOLID Principles
 
-Untuk memperbaikinya, saya menambahkan penanganan error yang lebih tepat di dalam blok catch agar exception tidak diabaikan. Dari proses ini, saya memahami bahwa menjaga kualitas kode penting untuk mencegah kesalahan tersembunyi dan membuat program lebih mudah dipelihara.
+### 1) Prinsip yang Diterapkan
 
-2. Evaluasi implementasi CI/CD
+**a. Single Responsibility Principle (SRP)**
 
-Workflow yang dibuat sudah bisa dianggap sebagai Continuous Integration karena setiap push akan langsung menjalankan build dan test secara otomatis. Dengan begitu, kesalahan bisa langsung diketahui lebih awal.
+Setiap kelas memiliki satu tanggung jawab yang jelas:
+- `CarController` — menangani HTTP request dan response
+- `CarServiceImpl` — menangani logika bisnis
+- `CarRepositoryImpl` — menangani penyimpanan dan pengambilan data
 
-Selain itu, proses deployment juga berjalan otomatis setelah build berhasil, sehingga bisa disebut sebagai Continuous Deployment. Implementasi ini masih sederhana, tetapi sudah cukup untuk menunjukkan konsep dasar CI/CD.
+**b. Open/Closed Principle (OCP)**
 
-### Catatan tentang Deployment
+`CarService` dan `CarRepository` didefinisikan sebagai interface. Sistem dapat dikembangkan tanpa mengubah kode yang sudah ada. Contohnya, mengganti mekanisme penyimpanan dari in-memory ke database cukup dengan membuat implementasi baru dari `CarRepository`.
 
-Aplikasi berhasil di-deploy ke **Koyeb** (PaaS) dan dapat diakses secara publik di:
+**c. Liskov Substitution Principle (LSP)**
 
-**🌐 Live URL:** https://narrow-harriett-eshop-module-bbef9481.koyeb.app/product/list
+`CarServiceImpl` mengimplementasikan `CarService`. `CarController` bergantung pada interface `CarService`, sehingga implementasi lain dapat menggantikan `CarServiceImpl` tanpa mengubah perilaku sistem.
 
-**Platform:** Koyeb Free Tier
-- Instance: 0.1 vCPU, 512 MB RAM
-- Region: Frankfurt, Germany
-- Builder: Docker
-- Auto-deploy: Enabled from main branch
+**d. Interface Segregation Principle (ISP)**
 
-Deployment menggunakan Dockerfile dan GitHub Actions untuk CI/CD automation. Setiap push ke main branch akan otomatis trigger build dan deploy jika semua test passed.
+Interface `CarService` hanya berisi method yang relevan dengan operasi Car: `create`, `findAll`, `findById`, `update`, dan `deleteCarById`. Klien tidak dipaksa bergantung pada method yang tidak digunakan.
+
+**e. Dependency Inversion Principle (DIP)**
+
+Modul tingkat tinggi tidak bergantung pada modul tingkat rendah, keduanya bergantung pada abstraksi:
+- `CarController` → bergantung pada `CarService` (interface)
+- `CarServiceImpl` → bergantung pada `CarRepository` (interface)
+
+Spring Framework melakukan dependency injection sehingga implementasi dapat diganti tanpa mengubah struktur sistem.
+
+### 2) Keuntungan Menerapkan SOLID
+
+**Lebih Mudah Di-maintain**
+
+Karena setiap kelas memiliki satu tanggung jawab, kesalahan dapat dilokalisasi dengan cepat. Misalnya, masalah pada pengambilan data cukup diperiksa di `CarRepositoryImpl`.
+
+**Lebih Mudah Dikembangkan**
+
+Dengan interface, penambahan fitur atau perubahan implementasi dapat dilakukan tanpa memodifikasi kode yang sudah ada, sehingga mengurangi risiko merusak fungsionalitas yang telah berjalan.
+
+**Lebih Mudah Di-test**
+
+Karena dependensi diarahkan pada abstraksi, unit testing dapat menggunakan mock object tanpa bergantung pada implementasi nyata seperti database.
+
+**Lebih Fleksibel**
+
+Implementasi baru dapat ditambahkan atau diganti tanpa mengubah kelas yang sudah ada.
+
+### 3) Kerugian Tidak Menerapkan SOLID
+
+**Sulit Di-maintain**
+
+Jika satu kelas menangani controller, logika bisnis, dan akses data sekaligus, perubahan kecil dapat berdampak besar dan meningkatkan risiko kesalahan.
+
+**Sulit Dikembangkan**
+
+Tanpa interface, kelas yang langsung membuat instansiasi repository akan sulit dikembangkan. Perubahan mekanisme penyimpanan memerlukan modifikasi langsung pada kelas tersebut.
+
+**Sulit Di-test**
+
+Ketergantungan langsung pada implementasi konkret menyulitkan unit testing karena sistem harus dijalankan secara penuh.
+
+**Desain yang Tidak Konsisten**
+
+Tanpa desain yang baik, dapat terjadi ketidakkonsistenan seperti penamaan method yang tidak sesuai konteks, misalnya `deleteProductById` pada modul Car, yang membingungkan pengembang lain.
+
+---
 
 ## Author
 
-Jenisa Bunga - 2406431334
-Fakultas Ilmu Komputer, Universitas Indonesia
-
-
+**Jenisa Bunga** — 2406431334  
