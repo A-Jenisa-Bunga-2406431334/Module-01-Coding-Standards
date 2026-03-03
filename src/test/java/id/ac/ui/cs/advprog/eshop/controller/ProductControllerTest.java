@@ -85,9 +85,9 @@ class ProductControllerTest {
 
     @Test
     void testDeleteProduct() {
-    doNothing().when(productService).delete("test-id");
-    String result = productController.deleteProduct("test-id");
+    doNothing().when(productService).deleteProductById("test-id");
+    String result = productController.deleteProductById("test-id");
     assertEquals("redirect:/product/list", result);
-    verify(productService, times(1)).delete("test-id");
+    verify(productService, times(1)).deleteProductById("test-id");
     }
 }

@@ -78,8 +78,8 @@ class ProductServiceTest {
 
     @Test
     void testDelete() {
-    when(productRepository.delete("test-id")).thenReturn(product);
-    productService.delete("test-id");
-    verify(productRepository, times(1)).delete("test-id");
+    when(productRepository.deleteProductById("test-id")).thenReturn(product);
+    productService.deleteProductById("test-id");
+    verify(productRepository, times(1)).deleteProductById("test-id");
     }
 }
