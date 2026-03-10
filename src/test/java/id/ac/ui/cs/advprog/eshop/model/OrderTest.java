@@ -9,96 +9,89 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderTest {
-
-    private Order order;
+    
     private List<Product> products;
-    private Product product;
 
     @BeforeEach
     void setUp() {
-        product = new Product();
-        product.setProductId("test-product-id");
-        product.setProductName("Test Product");
-        product.setProductQuantity(10);
-
-        products = new ArrayList<>();
-        products.add(product);
-
-        order = new Order();
-    }
-
-    // Unhappy: Test to create the order with empty Product
-    @Test
-    void testCreateOrderWithEmptyProduct() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            order.setProducts(new ArrayList<>());
-        });
-    }
-
-    // Unhappy: Test to create the order with no status defined
-    @Test
-    void testCreateOrderWithNoStatusDefined() {
-        order.setProducts(products);
-        order.setAuthor("Test Author");
-        order.setStatus(null);
+        this.products = new ArrayList<>();
         
-        assertNull(order.getStatus());
+        Product product1 = new Product();
+        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductQuantity(2);
+        this.products.add(product1);
+
+        Product product2 = new Product();
+        product2.setProductId("a2c62328-4a37-4664-83c7-f32db8620155");
+        product2.setProductName("Sabun Cap Usep");
+        product2.setProductQuantity(1);
+        this.products.add(product2);
     }
 
-    // Happy: Test to create the order status of "SUCCESS"
+    // Test 4: Unhappy - create order with empty products
     @Test
-    void testCreateOrderWithSuccessStatus() {
-        order.setProducts(products);
-        order.setAuthor("Test Author");
-        order.setStatus("SUCCESS");
-
-        assertEquals("SUCCESS", order.getStatus());
-        assertEquals("Test Author", order.getAuthor());
-        assertNotNull(order.getId());
-        assertNotNull(order.getOrderTime());
-    }
-
-    // Unhappy: Test to create the order with invalid status
-    @Test
-    void testCreateOrderWithInvalidStatus() {
+    void testCreateOrderEmptyProduct() {
+        this.products.clear();
+        
         assertThrows(IllegalArgumentException.class, () -> {
-            order.setStatus("INVALID_STATUS");
+            Order order = new Order("13652556-012a-4c07-b546-54eb1396479b",
+                this.products, 1708560000L, "Safira Sudrajat");
         });
     }
 
-    // Happy: Test to edit the order with one of correct status
+    // Test 5: Happy - create order with no status defined (default WAITING_PAYMENT)
     @Test
-    void testEditOrderWithCorrectStatus() {
-        order.setProducts(products);
-        order.setAuthor("Test Author");
-        order.setStatus("WAITING_PAYMENT");
+    void testCreateOrderDefaultStatus() {
+        Order order = new Order("13652556-012a-4c07-b546-54eb1396479b",
+            this.products, 1708560000L, "Safira Sudrajat");
 
+        assertSame(this.products, order.getProducts());
+        assertEquals(2, order.getProducts().size());
+        assertEquals("Sampo Cap Bambang", order.getProducts().get(0).getProductName());
+        assertEquals("Sabun Cap Usep", order.getProducts().get(1).getProductName());
+        assertEquals("13652556-012a-4c07-b546-54eb1396479b", order.getId());
+        assertEquals(1708560000L, order.getOrderTime());
+        assertEquals("Safira Sudrajat", order.getAuthor());
         assertEquals("WAITING_PAYMENT", order.getStatus());
+    }
 
-        order.setStatus("SUCCESS");
+    // Test 6: Happy - create order with SUCCESS status
+    @Test
+    void testCreateOrderSuccessStatus() {
+        Order order = new Order("13652556-012a-4c07-b546-54eb1396479b",
+            this.products, 1708560000L, "Safira Sudrajat", "SUCCESS");
+        
         assertEquals("SUCCESS", order.getStatus());
     }
 
+    // Test 7: Unhappy - create order with invalid status
     @Test
-    void testGetOrderId() {
-        assertNotNull(order.getId());
+    void testCreateOrderInvalidStatus() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Order order = new Order("13652556-012a-4c07-b546-54eb1396479b",
+                this.products, 1708560000L, "Safira Sudrajat", "MEOW");
+        });
     }
 
+    // Test 8: Happy - edit order status to CANCELLED
     @Test
-    void testGetProducts() {
-        order.setProducts(products);
-        assertEquals(1, order.getProducts().size());
-        assertEquals("Test Product", order.getProducts().get(0).getProductName());
+    void testSetStatusToCancelled() {
+        Order order = new Order("13652556-012a-4c07-b546-54eb1396479b",
+            this.products, 1708560000L, "Safira Sudrajat");
+        order.setStatus("CANCELLED");
+        
+        assertEquals("CANCELLED", order.getStatus());
     }
 
+    // Test 9: Unhappy - edit order status to invalid status
     @Test
-    void testGetOrderTime() {
-        assertNotNull(order.getOrderTime());
-    }
-
-    @Test
-    void testGetAuthor() {
-        order.setAuthor("John Doe");
-        assertEquals("John Doe", order.getAuthor());
+    void testSetStatusToInvalidStatus() {
+        Order order = new Order("13652556-012a-4c07-b546-54eb1396479b",
+            this.products, 1708560000L, "Safira Sudrajat");
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            order.setStatus("MEOW");
+        });
     }
 }
